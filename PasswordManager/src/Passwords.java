@@ -13,7 +13,7 @@ public class Passwords {
 
         int choice;
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n1. Store new password\n2. Access passwords\n3. Show which services are stored\n4. Delete passwords\n5. Quit");
+        System.out.println("\n1. Store a new password\n2. Access passwords\n3. Show which services are stored\n4. Delete a password\n5. Change a password\n6.Quit");
 
         while (true) {
             choice = sc.nextInt();
@@ -32,6 +32,10 @@ public class Passwords {
             }
 
             else if (choice == 5){
+                changePassword();
+            }
+
+            else if (choice == 6){
                 System.out.println("Have a nice day!");
                 System.exit(0);
             }
@@ -133,6 +137,36 @@ public class Passwords {
 
         Choose();
 
+    }
+
+    public void changePassword(){
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("For which service would you like to change the password? > ");
+        String whichService = sc.nextLine();
+
+        int check = 0;
+
+        for (int i = 0; i < serandpass + 1; i++){
+
+            if (Objects.equals(whichService, this.service.get(i))){
+                System.out.print("To what do you wish to change the password of " + this.service.get(i) +"? > ");
+                String newpassword = sc.nextLine();
+
+                this.password.set(i, newpassword);
+
+                System.out.println("The password of " + this.service.get(i) + " has been successfully changed!");
+
+                check = 1;
+
+            }
+        }
+
+        if (check == 0)
+            System.out.println("There is no password stored for " + whichService);
+
+        Choose();
     }
 
 }
