@@ -1,9 +1,8 @@
 import java.util.*;
 public class Passwords {
 
-    private ArrayList<String> service = new ArrayList<>();
-    private ArrayList<String> password = new ArrayList<>();
-    static int serandpass = -1;
+    private final ArrayList<String> service = new ArrayList<>();
+    private final ArrayList<String> password = new ArrayList<>();
 
     public Passwords(){
         Choose();
@@ -13,7 +12,7 @@ public class Passwords {
 
         int choice;
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n1. Store a new password\n2. Access passwords\n3. Show which services are stored\n4. Delete a password\n5. Change a password\n6.Quit");
+        System.out.println("\n1. Store a new password\n2. Access passwords\n3. Show which services are stored\n4. Delete a password\n5. Change a password\n6. Quit");
 
         while (true) {
             choice = sc.nextInt();
@@ -47,14 +46,32 @@ public class Passwords {
 
     public void setPassword(){
 
-        serandpass++;
-
         Scanner sc = new Scanner(System.in);
         System.out.print("Service: ");
-        this.service.add(sc.nextLine());
+        String addService = sc.nextLine();
 
-        System.out.print("Password of the service: ");
-        this.password.add(sc.nextLine());
+        int check = 0;
+
+        if (this.service.isEmpty())
+            this.service.add(addService);
+
+        else {
+
+            for (int i = 0; i < this.service.size(); i++) {
+
+                if (Objects.equals(this.service.get(i), addService)) {
+                    System.out.println("A password for " + addService + " has already been stored.");
+                    check = 1;
+                }
+
+                else this.service.add(addService);
+            }
+        }
+
+        if (check == 0) {
+            System.out.print("Password of the service: ");
+            this.password.add(sc.nextLine());
+        }
 
         Choose();
 
@@ -70,7 +87,7 @@ public class Passwords {
         while(true) {
             System.out.print("For which service would you like the access? > ");
             whichService = sc.nextLine();
-            for (int i = 0; i < serandpass + 1; i++) {
+            for (int i = 0; i < this.service.size(); i++) {
 
                 if (Objects.equals(whichService, this.service.get(i))) {
                     System.out.println("Password for " + this.service.get(i) + " is: " + this.password.get(i));
@@ -97,11 +114,11 @@ public class Passwords {
     public void ShowServices(){
 
         System.out.println("Stored services: ");
-        for (int i = 0; i < serandpass + 1; i++){
-            System.out.println(this.service.get(i));
+        for (String s : this.service) {
+            System.out.println(s);
         }
 
-        if (serandpass == -1){
+        if (this.service.isEmpty()){
             System.out.println("No services added yet!");
         }
 
@@ -117,7 +134,7 @@ public class Passwords {
 
         int check = 0;
 
-        for (int i = 0; i < serandpass + 1; i++){
+        for (int i = 0; i < this.service.size(); i++){
 
             if (Objects.equals(whichService, this.service.get(i))){
                 System.out.println("Password for " + this.service.get(i) + " has been successfully deleted!");
@@ -125,7 +142,6 @@ public class Passwords {
                 this.service.remove(i);
                 this.password.remove(i);
 
-                serandpass--;
                 check = 1;
                 break;
             }
@@ -148,15 +164,20 @@ public class Passwords {
 
         int check = 0;
 
-        for (int i = 0; i < serandpass + 1; i++){
+        for (int i = 0; i < this.service.size(); i++){
 
             if (Objects.equals(whichService, this.service.get(i))){
                 System.out.print("To what do you wish to change the password of " + this.service.get(i) +"? > ");
                 String newpassword = sc.nextLine();
 
-                this.password.set(i, newpassword);
+                if (Objects.equals(newpassword, this.password.get(i))){
+                    System.out.println("This is password is the same as the old password.");
+                }
 
-                System.out.println("The password of " + this.service.get(i) + " has been successfully changed!");
+                else {
+                    this.password.set(i, newpassword);
+                    System.out.println("The password of " + this.service.get(i) + " has been successfully changed!");
+                }
 
                 check = 1;
 
