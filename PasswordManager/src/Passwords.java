@@ -50,10 +50,12 @@ public class Passwords {
         System.out.print("Service: ");
         String addService = sc.nextLine();
 
-        int check = 0;
+        int checkEmpty = 0;
 
-        if (this.service.isEmpty())
+        if (this.service.isEmpty()) {
             this.service.add(addService);
+            checkEmpty = 1;
+        }
 
         else {
 
@@ -61,17 +63,16 @@ public class Passwords {
 
                 if (Objects.equals(this.service.get(i), addService)) {
                     System.out.println("A password for " + addService + " has already been stored.");
-                    check = 1;
+                    Choose();
                 }
-
-                else this.service.add(addService);
             }
         }
 
-        if (check == 0) {
-            System.out.print("Password of the service: ");
-            this.password.add(sc.nextLine());
-        }
+        if (checkEmpty == 0)
+            this.service.add(addService);
+
+        System.out.print("Password of the service: ");
+        this.password.add(sc.nextLine());
 
         Choose();
 
@@ -82,34 +83,21 @@ public class Passwords {
 
         String whichService;
 
-        int check = 0;
-
-        while(true) {
             System.out.print("For which service would you like the access? > ");
             whichService = sc.nextLine();
             for (int i = 0; i < this.service.size(); i++) {
 
                 if (Objects.equals(whichService, this.service.get(i))) {
                     System.out.println("Password for " + this.service.get(i) + " is: " + this.password.get(i));
-                    check = 1;
-                    break;
+                    Choose();
                 }
             }
 
-            if (check == 0) {
-                System.out.println("No password stored for that service!\nTry again?\nAny key to continue.\nQ to quit.");
-                String choice = sc.nextLine();
+            System.out.println("No password stored for that service.");
+            Choose();
 
-                if (Objects.equals(choice, "Q") || Objects.equals(choice, "q"))
-                    break;
-            }
-
-            if (check == 1)
-                break;
-        }
-
-        Choose();
     }
+
 
     public void ShowServices(){
 
@@ -132,8 +120,6 @@ public class Passwords {
         System.out.print("Which service would you like to delete? > ");
         String whichService = sc.nextLine();
 
-        int check = 0;
-
         for (int i = 0; i < this.service.size(); i++){
 
             if (Objects.equals(whichService, this.service.get(i))){
@@ -142,15 +128,11 @@ public class Passwords {
                 this.service.remove(i);
                 this.password.remove(i);
 
-                check = 1;
-                break;
+                Choose();
             }
         }
 
-        if (check == 0){
-            System.out.println("There is no password for " + whichService + " stored!");
-        }
-
+        System.out.println("There is no password for " + whichService + " stored!");
         Choose();
 
     }
@@ -159,34 +141,30 @@ public class Passwords {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("For which service would you like to change the password? > ");
+        System.out.print("For which service would you like to change the password? > ");
         String whichService = sc.nextLine();
-
-        int check = 0;
 
         for (int i = 0; i < this.service.size(); i++){
 
             if (Objects.equals(whichService, this.service.get(i))){
                 System.out.print("To what do you wish to change the password of " + this.service.get(i) +"? > ");
-                String newpassword = sc.nextLine();
+                String new_password = sc.nextLine();
 
-                if (Objects.equals(newpassword, this.password.get(i))){
-                    System.out.println("This is password is the same as the old password.");
+                if (Objects.equals(new_password, this.password.get(i))){
+                    System.out.println("This password is the same as the old password.");
+                    Choose();
                 }
 
                 else {
-                    this.password.set(i, newpassword);
+                    this.password.set(i, new_password);
                     System.out.println("The password of " + this.service.get(i) + " has been successfully changed!");
+                    Choose();
                 }
-
-                check = 1;
 
             }
         }
 
-        if (check == 0)
-            System.out.println("There is no password stored for " + whichService);
-
+        System.out.println("There is no password stored for " + whichService);
         Choose();
     }
 
