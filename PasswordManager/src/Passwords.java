@@ -4,17 +4,13 @@ public class Passwords {
     private final ArrayList<String> service = new ArrayList<>();
     private final ArrayList<String> password = new ArrayList<>();
 
-    public Passwords(){
-        Choose();
-    }
-
-    private void Choose() {
+    public void Choose() {
 
         int choice;
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n1. Store a new password\n2. Access passwords\n3. Show which services are stored\n4. Delete a password\n5. Change a password\n6. Quit");
 
         while (true) {
+            System.out.println("\n1. Store a new password\n2. Access passwords\n3. Show which services are stored\n4. Delete a password\n5. Change a password\n6. Logout");
             choice = sc.nextInt();
             if (choice == 1) {
                 setPassword();
@@ -36,7 +32,7 @@ public class Passwords {
 
             else if (choice == 6){
                 System.out.println("Have a nice day!");
-                System.exit(0);
+                return;
             }
             else {
                 System.out.println("Invalid choice");
@@ -63,7 +59,7 @@ public class Passwords {
 
                 if (Objects.equals(this.service.get(i), addService)) {
                     System.out.println("A password for " + addService + " has already been stored.");
-                    Choose();
+                    return;
                 }
             }
         }
@@ -74,7 +70,7 @@ public class Passwords {
         System.out.print("Password of the service: ");
         this.password.add(sc.nextLine());
 
-        Choose();
+        return;
 
     }
 
@@ -89,12 +85,12 @@ public class Passwords {
 
                 if (Objects.equals(whichService, this.service.get(i))) {
                     System.out.println("Password for " + this.service.get(i) + " is: " + this.password.get(i));
-                    Choose();
+                    return;
                 }
             }
 
             System.out.println("No password stored for that service.");
-            Choose();
+            return;
 
     }
 
@@ -110,7 +106,7 @@ public class Passwords {
             System.out.println("No services added yet!");
         }
 
-        Choose();
+        return;
     }
 
     public void deletePassword(){
@@ -128,12 +124,12 @@ public class Passwords {
                 this.service.remove(i);
                 this.password.remove(i);
 
-                Choose();
+                return;
             }
         }
 
         System.out.println("There is no password for " + whichService + " stored!");
-        Choose();
+        return;
 
     }
 
@@ -152,20 +148,20 @@ public class Passwords {
 
                 if (Objects.equals(new_password, this.password.get(i))){
                     System.out.println("This password is the same as the old password.");
-                    Choose();
+                    return;
                 }
 
                 else {
                     this.password.set(i, new_password);
                     System.out.println("The password of " + this.service.get(i) + " has been successfully changed!");
-                    Choose();
+                    return;
                 }
 
             }
         }
 
         System.out.println("There is no password stored for " + whichService);
-        Choose();
+        return;
     }
 
 }
