@@ -1,6 +1,6 @@
 # PasswordManager
 
-- *Create a password manager with Java and SQL for database.
+- *Create a password manager with Java and SQL for database.*
 ----------------------------------------------------------------------------------
 
 1. Create a basic password manager for 1 user without database yet.
