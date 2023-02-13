@@ -8,16 +8,16 @@
 2. Create multiple users (login system).
 - 90% done, it's in working order, still needs polishing.
 
-4. Creating a way to store those passwords (first with a simple .csv file).
+3. Creating a way to store those passwords (first with a simple .csv file).
 
 
-5. Add quality of life updates to this template.
+4. Add quality of life updates to this template.
 
 
-6. Add a database with SQL.
+5. Add a database with SQL.
 
 
-7. Add a GUI.
+6. Add a GUI.
 
 
  
