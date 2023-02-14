@@ -1,9 +1,11 @@
+import java.io.*;
 import java.util.*;
 public class User {
 
     private final ArrayList<String> username = new ArrayList<>();
     private final ArrayList<String> userPassword = new ArrayList<>();
     static int userID = -1;
+
     public int Register(){
 
         String newUsername, newPassword, checkPassword;
@@ -86,5 +88,58 @@ public class User {
         System.out.println("Incorrect username.");
         return -1;
 
+    }
+
+    public void saveUsers(){
+
+        try (FileWriter writer = new FileWriter("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\accounts.txt")) {
+            for (int i = 0; i < this.username.size(); i++) {
+                if (i == 0)
+                    writer.write(this.username.get(i) + "," + this.userPassword.get(i) + "," + userID + "\n");
+
+                else
+                    writer.write(this.username.get(i) + "," + this.userPassword.get(i) + "\n");
+            }
+        }
+
+        catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+    public int loadUsers(){
+
+        int numofUsers = 0;
+
+        try (Scanner fileScanner = new Scanner(new File("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\accounts.txt"))) {
+            while (fileScanner.hasNextLine()) {
+
+                if (numofUsers == 0) {
+                    String line = fileScanner.nextLine();
+                    String[] parts = line.split(",");
+
+                    this.username.add(parts[0]);
+                    this.userPassword.add(parts[1]);
+                    userID = Integer.parseInt(parts[2]);
+
+                    numofUsers++;
+                }
+
+                else{
+                    String line = fileScanner.nextLine();
+                    String[] parts = line.split(",");
+
+                    this.username.add(parts[0]);
+                    this.userPassword.add(parts[1]);
+
+                    numofUsers++;
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        return numofUsers;
     }
 }

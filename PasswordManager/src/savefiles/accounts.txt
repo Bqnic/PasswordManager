@@ -1,0 +1,4 @@
+bqnic,ok,3
+admin,admin
+new,new
+testuser,testing

@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 public class Passwords {
 
@@ -14,33 +18,24 @@ public class Passwords {
             choice = sc.nextInt();
             if (choice == 1) {
                 setPassword();
-            }
-            else if (choice == 2) {
+            } else if (choice == 2) {
                 getPassword();
-            }
-            else if (choice == 3){
+            } else if (choice == 3) {
                 ShowServices();
-            }
-
-            else if (choice == 4){
+            } else if (choice == 4) {
                 deletePassword();
-            }
-
-            else if (choice == 5){
+            } else if (choice == 5) {
                 changePassword();
-            }
-
-            else if (choice == 6){
+            } else if (choice == 6) {
                 System.out.println("Have a nice day!");
                 return;
-            }
-            else {
+            } else {
                 System.out.println("Invalid choice");
             }
         }
     }
 
-    public void setPassword(){
+    public void setPassword() {
 
         Scanner sc = new Scanner(System.in);
         System.out.print("Service: ");
@@ -51,9 +46,7 @@ public class Passwords {
         if (this.service.isEmpty()) {
             this.service.add(addService);
             checkEmpty = 1;
-        }
-
-        else {
+        } else {
 
             for (int i = 0; i < this.service.size(); i++) {
 
@@ -74,51 +67,51 @@ public class Passwords {
 
     }
 
-    public void getPassword(){
+    public void getPassword() {
         Scanner sc = new Scanner(System.in);
 
         String whichService;
 
-            System.out.print("For which service would you like the access? > ");
-            whichService = sc.nextLine();
-            for (int i = 0; i < this.service.size(); i++) {
+        System.out.print("For which service would you like the access? > ");
+        whichService = sc.nextLine();
+        for (int i = 0; i < this.service.size(); i++) {
 
-                if (Objects.equals(whichService, this.service.get(i))) {
-                    System.out.println("Password for " + this.service.get(i) + " is: " + this.password.get(i));
-                    return;
-                }
+            if (Objects.equals(whichService, this.service.get(i))) {
+                System.out.println("Password for " + this.service.get(i) + " is: " + this.password.get(i));
+                return;
             }
+        }
 
-            System.out.println("No password stored for that service.");
-            return;
+        System.out.println("No password stored for that service.");
+        return;
 
     }
 
 
-    public void ShowServices(){
+    public void ShowServices() {
 
         System.out.println("Stored services: ");
         for (String s : this.service) {
             System.out.println(s);
         }
 
-        if (this.service.isEmpty()){
+        if (this.service.isEmpty()) {
             System.out.println("No services added yet!");
         }
 
         return;
     }
 
-    public void deletePassword(){
+    public void deletePassword() {
 
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Which service would you like to delete? > ");
         String whichService = sc.nextLine();
 
-        for (int i = 0; i < this.service.size(); i++){
+        for (int i = 0; i < this.service.size(); i++) {
 
-            if (Objects.equals(whichService, this.service.get(i))){
+            if (Objects.equals(whichService, this.service.get(i))) {
                 System.out.println("Password for " + this.service.get(i) + " has been successfully deleted!");
 
                 this.service.remove(i);
@@ -133,25 +126,23 @@ public class Passwords {
 
     }
 
-    public void changePassword(){
+    public void changePassword() {
 
         Scanner sc = new Scanner(System.in);
 
         System.out.print("For which service would you like to change the password? > ");
         String whichService = sc.nextLine();
 
-        for (int i = 0; i < this.service.size(); i++){
+        for (int i = 0; i < this.service.size(); i++) {
 
-            if (Objects.equals(whichService, this.service.get(i))){
-                System.out.print("To what do you wish to change the password of " + this.service.get(i) +"? > ");
+            if (Objects.equals(whichService, this.service.get(i))) {
+                System.out.print("To what do you wish to change the password of " + this.service.get(i) + "? > ");
                 String new_password = sc.nextLine();
 
-                if (Objects.equals(new_password, this.password.get(i))){
+                if (Objects.equals(new_password, this.password.get(i))) {
                     System.out.println("This password is the same as the old password.");
                     return;
-                }
-
-                else {
+                } else {
                     this.password.set(i, new_password);
                     System.out.println("The password of " + this.service.get(i) + " has been successfully changed!");
                     return;
@@ -164,4 +155,53 @@ public class Passwords {
         return;
     }
 
+    public void savePasswords(int checkIfAppend) {
+
+        if (checkIfAppend == 0) {
+            try (FileWriter writer = new FileWriter("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\passwords.txt")) {
+                for (int i = 0; i < this.service.size(); i++)
+                    writer.write(this.service.get(i) + "," + this.password.get(i) + "\n");
+
+                writer.write("\n");
+
+            } catch (IOException e) {
+                System.out.println("Error writing to file: " + e.getMessage());
+            }
+        }
+
+        else {
+            try (FileWriter writer = new FileWriter("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\passwords.txt", true)) {
+                for (int i = 0; i < this.service.size(); i++)
+                    writer.write(this.service.get(i) + "," + this.password.get(i) + "\n");
+
+                writer.write("\n");
+
+            } catch (IOException e) {
+                System.out.println("Error writing to file: " + e.getMessage());
+            }
+        }
+    }
+
+    public void loadPasswords(int skipLines){
+
+        try (Scanner fileScanner = new Scanner(new File("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\passwords.txt"))) {
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                String[] parts = line.split(",");
+
+                if (line.equals("") && skipLines == 0)
+                    break;
+
+                else if (line.equals(""))
+                    skipLines--;
+
+                if (!line.equals("") && skipLines <= 0) {
+                    this.service.add(parts[0]);
+                    this.password.add(parts[1]);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
 }
