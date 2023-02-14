@@ -7,10 +7,10 @@
 - DONE
 ---------------------------------------------------------------------------------
 2. Create multiple users (login system).
-- 90% done, it's in working order, still needs polishing.
+- DONE
 ---------------------------------------------------------------------------------
-3. Creating a way to store those passwords (first with a simple .csv file).
-
+3. Creating a way to store those passwords (first with a simple .txt file).
+- DONE
 ---------------------------------------------------------------------------------
 4. Add quality of life updates to this template.
 
