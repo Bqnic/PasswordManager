@@ -13,7 +13,10 @@
 - DONE
 ---------------------------------------------------------------------------------
 4. Add quality of life updates to this template.
+- IN PROGRESS (commented the code, added limitations for user passwords using regex)
 
+- pending updates: * allowing user to manipulate his account (change username and password)
+                   * make another interface after login/register interface
 ---------------------------------------------------------------------------------
 5. Add a database with SQL.
 
