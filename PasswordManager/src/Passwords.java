@@ -8,7 +8,7 @@ public class Passwords {
     private final ArrayList<String> service = new ArrayList<>();
     private final ArrayList<String> password = new ArrayList<>();
 
-    public void Choose() {
+    public void Choose() { //Basic interface for user
 
         int choice;
         Scanner sc = new Scanner(System.in);
@@ -44,21 +44,21 @@ public class Passwords {
         int checkEmpty = 0;
 
         if (this.service.isEmpty()) {
-            this.service.add(addService);
+            this.service.add(addService.toLowerCase());
             checkEmpty = 1;
         } else {
 
             for (int i = 0; i < this.service.size(); i++) {
 
-                if (Objects.equals(this.service.get(i), addService)) {
-                    System.out.println("A password for " + addService + " has already been stored.");
+                if (Objects.equals(this.service.get(i).toLowerCase(), addService.toLowerCase())) {
+                    System.out.println("A password for " + addService.toLowerCase() + " has already been stored.");
                     return;
                 }
             }
         }
 
         if (checkEmpty == 0)
-            this.service.add(addService);
+            this.service.add(addService.toLowerCase());
 
         System.out.print("Password of the service: ");
         this.password.add(sc.nextLine());
@@ -76,7 +76,7 @@ public class Passwords {
         whichService = sc.nextLine();
         for (int i = 0; i < this.service.size(); i++) {
 
-            if (Objects.equals(whichService, this.service.get(i))) {
+            if (Objects.equals(whichService.toLowerCase(), this.service.get(i))) {
                 System.out.println("Password for " + this.service.get(i) + " is: " + this.password.get(i));
                 return;
             }
@@ -111,7 +111,7 @@ public class Passwords {
 
         for (int i = 0; i < this.service.size(); i++) {
 
-            if (Objects.equals(whichService, this.service.get(i))) {
+            if (Objects.equals(whichService.toLowerCase(), this.service.get(i))) {
                 System.out.println("Password for " + this.service.get(i) + " has been successfully deleted!");
 
                 this.service.remove(i);
@@ -135,7 +135,7 @@ public class Passwords {
 
         for (int i = 0; i < this.service.size(); i++) {
 
-            if (Objects.equals(whichService, this.service.get(i))) {
+            if (Objects.equals(whichService.toLowerCase(), this.service.get(i))) {
                 System.out.print("To what do you wish to change the password of " + this.service.get(i) + "? > ");
                 String new_password = sc.nextLine();
 
@@ -156,6 +156,11 @@ public class Passwords {
     }
 
     public void savePasswords(int checkIfAppend) {
+
+        //Reason this is split in 2 things, first if checkIfAppend == 0 then i am saving passwords for the first user,
+        //meaning that i need to overwrite the old files first
+        //after that checkIfAppend will be bigger than 0 (i am passing iterator of for loop for checkIfAppend)
+        //when checkIfAppend is > 0 then i do the same code but put "true" for appending instead of writing so i don't overwrite.
 
         if (checkIfAppend == 0) {
             try (FileWriter writer = new FileWriter("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\passwords.txt")) {
@@ -183,6 +188,10 @@ public class Passwords {
     }
 
     public void loadPasswords(int skipLines){
+
+        //skipLines is used so only load passwords that i need to for specific user.
+        //The passwords.txt splits passwords with blank line, so according to those blank lines i can manipulate which passwords
+        //for which users i will save
 
         try (Scanner fileScanner = new Scanner(new File("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\passwords.txt"))) {
             while (fileScanner.hasNextLine()) {

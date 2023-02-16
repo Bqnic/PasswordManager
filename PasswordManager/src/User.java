@@ -1,5 +1,8 @@
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class User {
 
     private final ArrayList<String> username = new ArrayList<>();
@@ -34,8 +37,24 @@ public class User {
         if (checkEmpty == 0)
             this.username.add(newUsername);
 
-        System.out.print("Enter password > ");
-        newPassword = sc.nextLine();
+        //I use regex to manipulate user's input for password (must be correct format!)
+
+        while(true) {
+            System.out.print("Enter password > ");
+            newPassword = sc.nextLine();
+
+            String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()-[{}]:;'?.,/*+=<>]).{8,20}$";
+
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(newPassword);
+            boolean validPassword = matcher.matches();
+
+            if (!validPassword){
+                System.out.println("Invalid password.\nPassword must include:\n- Atleast one number\n- Atleast one lowercase and uppercase letter\n- Atleast one special character\n- Must be between 8 and 20 characters long\n");
+            }
+            else break;
+        }
+
         System.out.print("Enter the password again > ");
         checkPassword = sc.nextLine();
 
@@ -91,6 +110,8 @@ public class User {
     }
 
     public void saveUsers(){
+
+        //when i == 0, i save userID aswell, so when i loadUsers i load the userID so i know how much users i actually have.
 
         try (FileWriter writer = new FileWriter("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\accounts.txt")) {
             for (int i = 0; i < this.username.size(); i++) {

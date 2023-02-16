@@ -1,4 +1,3 @@
-bqnic,ok,3
-admin,admin
-new,new
-testuser,testing
+bqnic,TestPass123!,2
+testuser,testingPassword7.
+John Smith,JohnSmithing5.
