@@ -141,12 +141,11 @@ public class Passwords {
 
                 if (Objects.equals(new_password, this.password.get(i))) {
                     System.out.println("This password is the same as the old password.");
-                    return;
                 } else {
                     this.password.set(i, new_password);
                     System.out.println("The password of " + this.service.get(i) + " has been successfully changed!");
-                    return;
                 }
+                return;
 
             }
         }
@@ -157,10 +156,10 @@ public class Passwords {
 
     public void savePasswords(int checkIfAppend) {
 
-        //Reason this is split in 2 things, first if checkIfAppend == 0 then i am saving passwords for the first user,
-        //meaning that i need to overwrite the old files first
-        //after that checkIfAppend will be bigger than 0 (i am passing iterator of for loop for checkIfAppend)
-        //when checkIfAppend is > 0 then i do the same code but put "true" for appending instead of writing so i don't overwrite.
+        //Reason this is split in 2 things, first if checkIfAppend == 0 then I am saving passwords for the first user,
+        //meaning that I need to overwrite the old files first
+        //after that checkIfAppend will be bigger than 0 (I am passing iterator of for loop for checkIfAppend)
+        //when checkIfAppend is > 0 then I do the same code but put "true" for appending instead of writing, so I don't overwrite.
 
         if (checkIfAppend == 0) {
             try (FileWriter writer = new FileWriter("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\passwords.txt")) {
@@ -189,9 +188,9 @@ public class Passwords {
 
     public void loadPasswords(int skipLines){
 
-        //skipLines is used so only load passwords that i need to for specific user.
-        //The passwords.txt splits passwords with blank line, so according to those blank lines i can manipulate which passwords
-        //for which users i will save
+        //skipLines is used so only load passwords that I need to for specific user.
+        //The passwords.txt splits passwords with blank line, so according to those blank lines I can manipulate which passwords
+        //for which users I will save
 
         try (Scanner fileScanner = new Scanner(new File("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\passwords.txt"))) {
             while (fileScanner.hasNextLine()) {

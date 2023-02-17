@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
 
         User userDatabase = new User();
-        Passwords [] Manager = new Passwords[20];
+        ArrayList<Passwords> Manager = new ArrayList<>();
 
         Scanner sc = new Scanner(System.in);
 
@@ -15,8 +16,9 @@ public class Main {
         arrSize = userDatabase.loadUsers();
 
         for (int i = 0; i < arrSize; i++){
-            Manager[i] = new Passwords();
-            Manager[i].loadPasswords(i);
+           Passwords passwords = new Passwords();
+           passwords.loadPasswords(i);
+           Manager.add(passwords);
         }
 
         //Basic interface for a user, will loop until user decides to quit.
@@ -28,10 +30,13 @@ public class Main {
             if (choice == 1) {
                 int userID = userDatabase.Login();
 
-                //userID will be -1 if something went wrong with login, so the value must be non-negative to access passwords
+                //userID will be -1 if something went wrong with login, so the value must be non-negative to access user interface.
 
                 if (userID >= 0){
-                    Manager[userID].Choose();
+                    userID = userDatabase.UserInterface(userID);
+
+                    if (userID >= 0)
+                        Manager.get(userID).Choose();
                 }
             }
 
@@ -39,8 +44,8 @@ public class Main {
                 int userID = userDatabase.Register();
 
                 if (userID >= 0){
-                    Manager[userID] = new Passwords();
-                    arrSize++;
+                   Manager.add(new Passwords());
+                   arrSize++;
                 }
             }
 
@@ -51,7 +56,7 @@ public class Main {
                 userDatabase.saveUsers();
 
                 for (int i = 0; i < arrSize; i++){
-                    Manager[i].savePasswords(i);
+                    Manager.get(i).savePasswords(i);
                 }
 
                 System.exit(0);
