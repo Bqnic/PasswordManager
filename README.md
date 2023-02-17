@@ -13,11 +13,12 @@
 - **DONE**
 ---------------------------------------------------------------------------------
 4. Add quality of life updates to this template.
-- **IN PROGRESS** (commented the code, added limitations for user passwords using regex)
+- **IN PROGRESS** (commenting the code)
 
 - **PENDING UPDATES**:  
-- allowing user to manipulate his account (change username and password)
-- make another interface after login/register interface
+- allowing user to manipulate his account (change username and password) :white_check_mark: :white_check_mark:
+- make another interface after login/register interface :white_check_mark: :white_check_mark:
+- allowing user to delete his account
 ---------------------------------------------------------------------------------
 5. Add a database with SQL.
 
