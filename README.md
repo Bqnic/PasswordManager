@@ -4,13 +4,13 @@
 ----------------------------------------------------------------------------------
 
 1. Create a basic password manager for 1 user without database yet.
-- **DONE**
+- **DONE** :white_check_mark:
 ---------------------------------------------------------------------------------
 2. Create multiple users (login system).
-- **DONE**
+- **DONE** :white_check_mark:
 ---------------------------------------------------------------------------------
 3. Creating a way to store those passwords (first with a simple .txt file).
-- **DONE**
+- **DONE** :white_check_mark:
 ---------------------------------------------------------------------------------
 4. Add quality of life updates to this template.
 - **IN PROGRESS** (commenting the code)
