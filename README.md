@@ -18,7 +18,8 @@
 - **PENDING UPDATES**:  
 - allowing user to manipulate his account (change username and password) :white_check_mark:
 - make another interface after login/register interface :white_check_mark:
-- allowing user to delete his account
+- allowing user to delete his account :white_check_mark:
+- bring security to user inputs
 ---------------------------------------------------------------------------------
 5. Add a database with SQL.
 
