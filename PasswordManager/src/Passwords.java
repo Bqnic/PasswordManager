@@ -14,7 +14,7 @@ public class Passwords {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\n1. Store a new password\n2. Access passwords\n3. Show which services are stored\n4. Delete a password\n5. Change a password\n6. Logout");
+            System.out.println("\n1. Store a new password\n2. Access passwords\n3. Show which services are stored\n4. Delete a password\n5. Change a password\n6. Go back to user interface");
             choice = sc.nextInt();
             if (choice == 1) {
                 setPassword();
@@ -154,6 +154,12 @@ public class Passwords {
         return;
     }
 
+    public void deleteAllPasswords(){
+        this.service.clear();
+        this.password.clear();
+        return;
+    }
+
     public void savePasswords(int checkIfAppend) {
 
         //Reason this is split in 2 things, first if checkIfAppend == 0 then I am saving passwords for the first user,
@@ -166,7 +172,8 @@ public class Passwords {
                 for (int i = 0; i < this.service.size(); i++)
                     writer.write(this.service.get(i) + "," + this.password.get(i) + "\n");
 
-                writer.write("\n");
+                if (this.service.size() > 0)
+                    writer.write("\n");
 
             } catch (IOException e) {
                 System.out.println("Error writing to file: " + e.getMessage());
@@ -178,7 +185,8 @@ public class Passwords {
                 for (int i = 0; i < this.service.size(); i++)
                     writer.write(this.service.get(i) + "," + this.password.get(i) + "\n");
 
-                writer.write("\n");
+                if (this.service.size() > 0)
+                    writer.write("\n");
 
             } catch (IOException e) {
                 System.out.println("Error writing to file: " + e.getMessage());
@@ -187,6 +195,11 @@ public class Passwords {
     }
 
     public void loadPasswords(int skipLines){
+
+        if (!this.service.isEmpty() && skipLines == 0){
+            this.service.clear();
+            this.password.clear();
+        }
 
         //skipLines is used so only load passwords that I need to for specific user.
         //The passwords.txt splits passwords with blank line, so according to those blank lines I can manipulate which passwords

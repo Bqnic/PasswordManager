@@ -29,10 +29,12 @@ public class User {
 
     public int UserInterface(int currentID){
         Scanner sc = new Scanner(System.in);
+        int choice;
 
         while(true){
+
             System.out.println("1. Access password manager\n2. Change password\n3. Change username\n4. Delete account\n5. Logout");
-            int choice = sc.nextInt();
+            choice = sc.nextInt();
 
             if (choice == 1)
                 return currentID;
@@ -43,8 +45,12 @@ public class User {
             else if (choice == 3)
                 changeUsername(currentID);
 
-            else if (choice == 4)
-                System.out.println("placeholder");
+            else if (choice == 4) {
+                boolean checkifDeleted = deleteUser(currentID);
+
+                if (checkifDeleted)
+                    return currentID + 1000;
+            }
 
             else if (choice == 5)
                 return -1;
@@ -212,6 +218,36 @@ public class User {
         return;
     }
 
+    public boolean deleteUser(int currentID){
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Are you sure you want to delete your account?\n1. Yes\n2. Go back");
+            int choice = sc.nextInt();
+
+            if (choice == 1) {
+                System.out.print("Enter your password: ");
+                sc.nextLine();
+                String checkPass = sc.nextLine();
+
+                if (Objects.equals(checkPass, this.userPassword.get(currentID))) {
+
+                    this.username.remove(currentID);
+                    this.userPassword.remove(currentID);
+                    userID--;
+
+                    System.out.println("Account has been successfully deleted!");
+                    return true;
+                }
+            } else if (choice == 2)
+                return false;
+
+            else {
+                System.out.println("Incorrect input.");
+            }
+        }
+    }
+
     public void saveUsers(){
 
         //when i == 0, I save userID as well, so when I loadUsers I load the userID, so I know how many users I actually have.
@@ -234,6 +270,11 @@ public class User {
     public int loadUsers(){
 
         int numofUsers = 0;
+
+        if (!this.username.isEmpty()){
+            this.username.clear();
+            this.userPassword.clear();
+        }
 
         try (Scanner fileScanner = new Scanner(new File("C:\\Users\\Bonic\\IdeaProjects\\PasswordManager\\src\\savefiles\\accounts.txt"))) {
             while (fileScanner.hasNextLine()) {

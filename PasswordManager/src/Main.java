@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -32,11 +33,40 @@ public class Main {
 
                 //userID will be -1 if something went wrong with login, so the value must be non-negative to access user interface.
 
-                if (userID >= 0){
-                    userID = userDatabase.UserInterface(userID);
+                if (userID >= 0 && userID < 1000){
 
-                    if (userID >= 0)
-                        Manager.get(userID).Choose();
+                    //This loop is to stay in user interface
+
+                    while (userID >= 0 && userID < 1000) {
+                        userID = userDatabase.UserInterface(userID);
+
+                        if (userID >= 0 && userID < 1000) {
+                            Manager.get(userID).Choose();
+                        }
+                    }
+
+                    if (userID >= 1000){
+                        //If userID is bigger than 1000 then that means that an account has been deleted.
+                        //I need to reload users and passwords in order to have everything working.
+
+                        userDatabase.saveUsers();
+
+                        Manager.get(userID - 1000).deleteAllPasswords();
+
+                        for (int i = 0; i < arrSize; i++)
+                            Manager.get(i).savePasswords(i);
+
+                        Manager.clear();
+
+                        arrSize = userDatabase.loadUsers();
+
+                        for (int i = 0; i < arrSize; i++){
+                            Passwords passwords = new Passwords();
+                            passwords.loadPasswords(i);
+                            Manager.add(passwords);
+                        }
+
+                    }
                 }
             }
 
@@ -55,9 +85,8 @@ public class Main {
                 System.out.print("Have a nice day!");
                 userDatabase.saveUsers();
 
-                for (int i = 0; i < arrSize; i++){
+                for (int i = 0; i < arrSize; i++)
                     Manager.get(i).savePasswords(i);
-                }
 
                 System.exit(0);
             }
