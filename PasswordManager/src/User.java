@@ -9,6 +9,7 @@ public class User {
     private final ArrayList<String> userPassword = new ArrayList<>();
     static int userID = -1;
 
+    GUI gui = new GUI();
 
     //I use regex to manipulate user's input for password (must be correct format!)
     public boolean regex(String checkPass){
@@ -28,13 +29,13 @@ public class User {
     }
 
     public int UserInterface(int currentID){
-        Scanner sc = new Scanner(System.in);
         int choice;
 
         while(true){
 
-            System.out.println("1. Access password manager\n2. Change password\n3. Change username\n4. Delete account\n5. Logout");
-            choice = sc.nextInt();
+            choice = gui.LoggedInWindow();
+            gui.clearWindow();
+            gui.disposeWindow();
 
             if (choice == 1)
                 return currentID;
@@ -61,127 +62,139 @@ public class User {
     }
     public int Register(){
 
-        String newUsername, newPassword, checkPassword;
-        Scanner sc = new Scanner(System.in);
+        String checkLine = gui.Register();
 
-        System.out.print("Enter username > ");
-        newUsername = sc.nextLine();
-
-        int checkEmpty = 0;
-        if (this.username.isEmpty()) {
-            this.username.add(newUsername);
-            checkEmpty = 1;
+        if (Objects.equals(checkLine, ",,")){
+            gui.NothingEntered();
+            gui.clearWindow();
+            gui.disposeWindow();
+            return -1;
         }
 
-        else {
+        String[] line = checkLine.split(",");
 
-            for (int i = 0; i < this.username.size(); i++) {
-
-                if (Objects.equals(newUsername, this.username.get(i))) {
-                    System.out.println("This username is already taken.");
-                    return -1;
-                }
-            }
-        }
-
-        if (checkEmpty == 0)
-            this.username.add(newUsername);
-
+        String newUsername = line[0], newPassword = line[1], checkPassword = line[2];
 
         while(true) {
-            System.out.print("Enter password > ");
-            newPassword = sc.nextLine();
 
-            boolean validPassword = regex(newPassword);
+            int usernameExists = 0;
 
-            if (validPassword) {
-                break;
+            if (!this.username.isEmpty()) {
+
+                for (String s : this.username) {
+
+                    if (Objects.equals(newUsername, s)) {
+                        usernameExists = 1;
+                        gui.RegisterUsernameError();
+                        break;
+                    }
+                }
             }
-        }
 
-        System.out.print("Enter the password again > ");
-        checkPassword = sc.nextLine();
+            if (usernameExists == 0) {
+                boolean validPassword = regex(newPassword);
 
-        if (Objects.equals(newPassword, checkPassword)){
-            System.out.println("Account successfully created!");
-            this.userPassword.add(newPassword);
+                if (validPassword) {
 
-            userID++;
-            return userID;
-        }
+                    if (Objects.equals(newPassword, checkPassword)) {
+                        gui.RegisterSuccessful();
+                        gui.clearWindow();
+                        gui.disposeWindow();
+                        this.username.add(newUsername);
+                        this.userPassword.add(newPassword);
 
-        else{
-            System.out.println("You entered incorrect password.\nAccount not created.");
-            this.username.remove(newUsername);
-            return -1;
+                        userID++;
+                        return userID;
+                    } else {
+                        gui.RegisterFailed();
+                    }
+                }
+                else
+                    gui.RegisterPasswordError();
+            }
+
+            gui.clearWindow();
+
+            line = gui.Register().split(",");
+
+            newUsername = line[0];
+            newPassword = line[1];
+            checkPassword = line[2];
         }
     }
     public int Login(){
 
         if (this.username.isEmpty()){
-            System.out.println("No users in the system yet!");
+            gui.LoginEmpty();
             return -1;
         }
 
-        String checkUsername, checkPassword;
-        Scanner sc = new Scanner(System.in);
+        String account = gui.Login();
 
-        System.out.print("Enter username > ");
-        checkUsername = sc.nextLine();
+        String[] line = account.split(",");
+        String checkUsername = line[0], checkPassword = line[1];
 
         for (int i = 0; i < this.username.size(); i++){
 
-            if (Objects.equals(checkUsername, this.username.get(i))){
-
-                System.out.print("Enter password > ");
-                checkPassword = sc.nextLine();
-
-                if (Objects.equals(this.userPassword.get(i), checkPassword)){
-                    System.out.println("Successful login!");
-                    return i;
-                }
-
-                else{
-                    System.out.println("Incorrect password.");
-                    return -1;
-                }
+            if (Objects.equals(checkUsername, this.username.get(i)) && Objects.equals(this.userPassword.get(i), checkPassword)){
+                gui.clearWindow();
+                gui.disposeWindow();
+                return i;
             }
         }
 
-        System.out.println("Incorrect username.");
+        gui.LoginFailed();
+        gui.clearWindow();
+        gui.disposeWindow();
         return -1;
 
     }
 
     public void changePassword(int currentID){
-        Scanner sc = new Scanner(System.in);
-        String oldPass, newPass;
 
-        System.out.print("Enter your old password: ");
-        oldPass = sc.nextLine();
+        String changePass = gui.ChangeUserPassword();
+
+        if (Objects.equals(changePass, ",,")) {
+            gui.NothingEntered();
+            gui.clearWindow();
+            gui.disposeWindow();
+            return;
+        }
+
+        String[] line = changePass.split(",");
+        String oldPass = line[0], newPass = line[1], checkPass = line[2];
 
         if (Objects.equals(this.userPassword.get(currentID), oldPass)){
-
-            System.out.print("Enter your new password: ");
-            newPass = sc.nextLine();
 
             boolean validPassword = regex(newPass);
 
             if (validPassword) {
                 if (Objects.equals(this.userPassword.get(currentID), newPass)) {
-                    System.out.println("Your new password can't be the same as the old one.");
+                    gui.ChangeUserPasswordSamePassword();
                 }
 
                 else{
-                    this.userPassword.set(currentID, newPass);
-                    System.out.println("Password successfully changed!");
+                    if (Objects.equals(newPass, checkPass)) {
+                        this.userPassword.set(currentID, newPass);
+                        gui.ChangeUserPasswordSuccess();
+                    }
+
+                    else
+                        gui.RegisterFailed();
                 }
             }
+
+            else
+                gui.RegisterPasswordError();
+
         }
 
-        else{
-            System.out.println("You entered incorrect password.");
-        }
+        else
+            gui.ChangeUserPasswordFailure();
+
+        gui.clearWindow();
+        gui.disposeWindow();
+
         return;
     }
 

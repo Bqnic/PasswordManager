@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -8,7 +6,7 @@ public class Main {
         User userDatabase = new User();
         ArrayList<Passwords> Manager = new ArrayList<>();
 
-        Scanner sc = new Scanner(System.in);
+        GUI gui = new GUI();
 
         int arrSize = 0;
 
@@ -21,19 +19,17 @@ public class Main {
            passwords.loadPasswords(i);
            Manager.add(passwords);
         }
+        while(true) {
+            int choice = gui.StartingWindow();
 
-        //Basic interface for a user, will loop until user decides to quit.
-
-        while (true) {
-            System.out.println("1. Login\n2. Register\n3. Quit");
-            int choice = sc.nextInt();
+            //Basic interface for user
 
             if (choice == 1) {
                 int userID = userDatabase.Login();
 
                 //userID will be -1 if something went wrong with login, so the value must be non-negative to access user interface.
 
-                if (userID >= 0 && userID < 1000){
+                if (userID >= 0 && userID < 1000) {
 
                     //This loop is to stay in user interface
 
@@ -45,7 +41,7 @@ public class Main {
                         }
                     }
 
-                    if (userID >= 1000){
+                    if (userID >= 1000) {
                         //If userID is bigger than 1000 then that means that an account has been deleted.
                         //I need to reload users and passwords in order to have everything working.
 
@@ -60,7 +56,7 @@ public class Main {
 
                         arrSize = userDatabase.loadUsers();
 
-                        for (int i = 0; i < arrSize; i++){
+                        for (int i = 0; i < arrSize; i++) {
                             Passwords passwords = new Passwords();
                             passwords.loadPasswords(i);
                             Manager.add(passwords);
@@ -68,15 +64,15 @@ public class Main {
 
                     }
                 }
-            }
 
-            else if (choice == 2) {
+            } else if (choice == 2) {
                 int userID = userDatabase.Register();
 
-                if (userID >= 0){
-                   Manager.add(new Passwords());
-                   arrSize++;
+                if (userID >= 0) {
+                    Manager.add(new Passwords());
+                    arrSize++;
                 }
+
             }
 
             //When user decides to quit, passwords for User class and passwords for Passwords class save before system.exit
@@ -91,7 +87,7 @@ public class Main {
                 System.exit(0);
             }
 
-            else System.out.println("Incorrect input.");
+            //else System.out.println("Incorrect input.");
         }
     }
 }
