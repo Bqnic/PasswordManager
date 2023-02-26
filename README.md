@@ -21,10 +21,10 @@
 - allowing user to delete his account :white_check_mark:
 - bring security to user inputs
 ---------------------------------------------------------------------------------
-5. Add a database with SQL.
+5. Add a database with SQL. (i dont wanna do this yet lol)
 
 ---------------------------------------------------------------------------------
-6. Add a GUI.
+6. Add a GUI. (IN PROGRESS)
 
 
  
